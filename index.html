@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Md. Yeasin Hasan Sunny — Portfolio</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="header">
     <nav class="nav container">
-      <a href="#" class="logo">Sunny</a>
+      <a href="#" class="logo">&lt;SUNNY.SYS /&gt;</a>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
       <ul class="nav-links" id="nav-links">
         <li><a href="#about">About</a></li>
@@ -23,51 +26,64 @@
 
   <main>
     <section class="hero">
-      <div class="hero-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-      </div>
+      <div class="cyber-grid"></div>
+      <div class="neon-orb orb-1"></div>
+      <div class="neon-orb orb-2"></div>
+
       <div class="container hero-content">
         <div class="hero-text">
-          <p class="hero-greeting">Hello, I'm</p>
-          <h1>Md. Yeasin Hasan Sunny</h1>
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE // AVAILABLE FOR COLLABORATIONS
+          </div>
+          <p class="hero-greeting">&gt; Hello, I'm</p>
+          <h1 data-text="Md. Yeasin Hasan Sunny">Md. Yeasin Hasan Sunny</h1>
           <p class="hero-role">Student · Developer · Problem Solver</p>
-          <p class="hero-bio">Never learnt to get stuck. Fought, conquered and achieved.</p>
+          <p class="hero-bio">"Never learnt to get stuck. Fought, conquered and achieved."</p>
           <div class="hero-buttons">
-            <a href="#projects" class="btn btn-primary">View My Work</a>
-            <a href="https://github.com/im-ajax" target="_blank" rel="noopener" class="btn btn-outline">GitHub</a>
+            <a href="#projects" class="btn btn-primary">Explore Work</a>
+            <a href="https://github.com/im-ajax" target="_blank" rel="noopener" class="btn btn-outline">GitHub Node</a>
           </div>
           <div class="hero-stats">
             <div class="stat">
               <span class="stat-number" id="stat-repos">18</span>
               <span class="stat-label">Repositories</span>
             </div>
+            <div class="stat-divider"></div>
             <div class="stat">
               <span class="stat-number" id="stat-followers">10</span>
               <span class="stat-label">Followers</span>
             </div>
+            <div class="stat-divider"></div>
             <div class="stat">
               <span class="stat-number">UIU</span>
               <span class="stat-label">University</span>
             </div>
           </div>
         </div>
+
         <div class="hero-photo-wrap">
-          <div class="photo-ring"></div>
-          <img
-            src="https://avatars.githubusercontent.com/u/206680524?v=4"
-            alt="Md. Yeasin Hasan Sunny"
-            class="hero-photo"
-            id="profile-photo"
-          >
+          <div class="hud-ring outer-ring"></div>
+          <div class="hud-ring inner-ring"></div>
+          <div class="photo-frame">
+            <img
+              src="https://avatars.githubusercontent.com/u/206680524?v=4"
+              alt="Md. Yeasin Hasan Sunny"
+              class="hero-photo"
+              id="profile-photo"
+            >
+            <div class="scanline"></div>
+          </div>
         </div>
       </div>
     </section>
 
     <section id="about" class="section reveal">
       <div class="container">
-        <h2 class="section-title">About Me</h2>
+        <div class="section-header">
+          <span class="section-tag">// 01. IDENTITY_LOG</span>
+          <h2 class="section-title">About Me</h2>
+        </div>
         <div class="about-grid">
           <div class="about-card">
             <p>
@@ -112,12 +128,15 @@
 
     <section id="education" class="section section-alt reveal">
       <div class="container">
-        <h2 class="section-title">Education</h2>
+        <div class="section-header">
+          <span class="section-tag">// 02. ACADEMIC_NODE</span>
+          <h2 class="section-title">Education</h2>
+        </div>
         <div class="timeline">
           <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-              <span class="timeline-badge">Current</span>
+              <span class="timeline-badge">ACTIVE // CURRENT</span>
               <h3>United International University</h3>
               <p class="timeline-sub">Dhaka, Bangladesh</p>
               <p>Building a strong foundation in computer science and software development while working on personal and academic projects.</p>
@@ -129,8 +148,11 @@
 
     <section id="skills" class="section reveal">
       <div class="container">
-        <h2 class="section-title">Skills</h2>
-        <p class="section-subtitle">Languages and tools I work with</p>
+        <div class="section-header">
+          <span class="section-tag">// 03. TECH_ARSENAL</span>
+          <h2 class="section-title">Skills</h2>
+          <p class="section-subtitle">Languages and tools I work with</p>
+        </div>
         <div class="tech-grid">
           <div class="tech-card" style="--delay: 0s; --color: #a8b9cc;">
             <div class="tech-icon-wrap">
@@ -180,14 +202,17 @@
 
     <section id="projects" class="section section-alt reveal">
       <div class="container">
-        <h2 class="section-title">Projects</h2>
-        <p class="section-subtitle">A selection of my work from GitHub</p>
+        <div class="section-header">
+          <span class="section-tag">// 04. REPOSITORIES</span>
+          <h2 class="section-title">Projects</h2>
+          <p class="section-subtitle">A selection of my work from GitHub</p>
+        </div>
         <div id="projects-grid" class="projects-grid">
-          <div class="loading">Loading projects...</div>
+          <div class="loading">Initializing GitHub data stream...</div>
         </div>
         <div class="projects-footer">
-          <a href="https://github.com/im-ajax?tab=repositories" target="_blank" rel="noopener" class="btn btn-primary">
-            See All on GitHub →
+          <a href="https://github.com/im-ajax?tab=repositories" target="_blank" rel="noopener" class="btn btn-outline">
+            Access All Repositories →
           </a>
         </div>
       </div>
@@ -195,32 +220,37 @@
 
     <section id="contact" class="section reveal">
       <div class="container">
-        <h2 class="section-title">Get In Touch</h2>
-        <p class="section-subtitle">Have a question or want to collaborate? Send me a message.</p>
-        <form id="contact-form" class="contact-form" novalidate>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Your Name *</label>
-              <input type="text" id="name" name="name" required>
-              <span class="error-msg"></span>
+        <div class="section-header">
+          <span class="section-tag">// 05. TRANSMIT_SIGNAL</span>
+          <h2 class="section-title">Get In Touch</h2>
+          <p class="section-subtitle">Have a question or want to collaborate? Send me a message.</p>
+        </div>
+        <div class="contact-wrapper">
+          <form id="contact-form" class="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Your Name *</label>
+                <input type="text" id="name" name="name" placeholder="Enter identifier..." required>
+                <span class="error-msg"></span>
+              </div>
+              <div class="form-group">
+                <label for="email">Your Email *</label>
+                <input type="email" id="email" name="email" placeholder="user@domain.com" required>
+                <span class="error-msg"></span>
+              </div>
             </div>
             <div class="form-group">
-              <label for="email">Your Email *</label>
-              <input type="email" id="email" name="email" required>
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" rows="5" required placeholder="Type your transmission here..."></textarea>
               <span class="error-msg"></span>
             </div>
+            <button type="submit" class="btn btn-primary btn-full">Transmit Message</button>
+          </form>
+          <div id="contact-success" class="contact-success hidden">
+            <span class="success-icon">⚡</span>
+            <h3>Transmission Ready!</h3>
+            <p>Your email client will open with your message. Thanks for reaching out!</p>
           </div>
-          <div class="form-group">
-            <label for="message">Message *</label>
-            <textarea id="message" name="message" rows="5" required placeholder="Write your message here..."></textarea>
-            <span class="error-msg"></span>
-          </div>
-          <button type="submit" class="btn btn-primary btn-full">Send Message</button>
-        </form>
-        <div id="contact-success" class="contact-success hidden">
-          <span class="success-icon">✉️</span>
-          <h3>Message Ready!</h3>
-          <p>Your email client will open with your message. Thanks for reaching out!</p>
         </div>
 
         <div class="contact-info">
@@ -258,10 +288,10 @@
 
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2026 Md. Yeasin Hasan Sunny. Built with HTML, CSS & JavaScript.</p>
+      <p>&copy; 2026 Md. Yeasin Hasan Sunny. Engineered with HTML, CSS &amp; JavaScript.</p>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
