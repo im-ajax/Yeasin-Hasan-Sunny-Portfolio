@@ -3,8 +3,6 @@ const PROFILE_PHOTO = "photo.jpg";
 
 const navToggle = document.getElementById("nav-toggle");
 const navLinks = document.getElementById("nav-links");
-const contactForm = document.getElementById("contact-form");
-const contactSuccess = document.getElementById("contact-success");
 const projectsGrid = document.getElementById("projects-grid");
 const profilePhoto = document.getElementById("profile-photo");
 
@@ -171,79 +169,8 @@ function loadGitHubProjects() {
     });
 }
 
-function showError(input, message) {
-  input.classList.add("invalid");
-  const errorEl = input.parentElement.querySelector(".error-msg");
-  if (errorEl) {
-    errorEl.textContent = message;
-  }
-}
-
-function clearError(input) {
-  input.classList.remove("invalid");
-  const errorEl = input.parentElement.querySelector(".error-msg");
-  if (errorEl) {
-    errorEl.textContent = "";
-  }
-}
-
-function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function handleContactSubmit(event) {
-  event.preventDefault();
-
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const messageInput = document.getElementById("message");
-  let isValid = true;
-
-  const fields = [nameInput, emailInput, messageInput];
-  for (let i = 0; i < fields.length; i++) {
-    clearError(fields[i]);
-  }
-
-  if (nameInput.value.trim() === "") {
-    showError(nameInput, "Name is required.");
-    isValid = false;
-  }
-
-  if (emailInput.value.trim() === "") {
-    showError(emailInput, "Email is required.");
-    isValid = false;
-  } else if (!validateEmail(emailInput.value.trim())) {
-    showError(emailInput, "Please enter a valid email.");
-    isValid = false;
-  }
-
-  if (messageInput.value.trim() === "") {
-    showError(messageInput, "Message is required.");
-    isValid = false;
-  }
-
-  if (!isValid) {
-    return;
-  }
-
-  const subject = encodeURIComponent("Portfolio Contact from " + nameInput.value.trim());
-  const body = encodeURIComponent(
-    "Name: " + nameInput.value.trim() + "\n" +
-    "Email: " + emailInput.value.trim() + "\n\n" +
-    messageInput.value.trim()
-  );
-
-  window.location.href = "mailto:saniahmed0480@gmail.com?subject=" + subject + "&body=" + body;
-
-  contactForm.classList.add("hidden");
-  contactSuccess.classList.remove("hidden");
-}
-
 setupNav();
 setupScrollReveal();
 tryLocalPhoto();
 loadGitHubProfile();
 loadGitHubProjects();
-if (contactForm) {
-  contactForm.addEventListener("submit", handleContactSubmit);
-}
