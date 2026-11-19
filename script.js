@@ -1,20 +1,22 @@
-var GITHUB_USERNAME = "im-ajax";
-var PROFILE_PHOTO = "photo.jpg";
+const GITHUB_USERNAME = "im-ajax";
+const PROFILE_PHOTO = "photo.jpg";
 
-var navToggle = document.getElementById("nav-toggle");
-var navLinks = document.getElementById("nav-links");
-var contactForm = document.getElementById("contact-form");
-var contactSuccess = document.getElementById("contact-success");
-var projectsGrid = document.getElementById("projects-grid");
-var profilePhoto = document.getElementById("profile-photo");
+const navToggle = document.getElementById("nav-toggle");
+const navLinks = document.getElementById("nav-links");
+const contactForm = document.getElementById("contact-form");
+const contactSuccess = document.getElementById("contact-success");
+const projectsGrid = document.getElementById("projects-grid");
+const profilePhoto = document.getElementById("profile-photo");
 
 function setupNav() {
+  if (!navToggle || !navLinks) return;
+
   navToggle.addEventListener("click", function () {
     navLinks.classList.toggle("open");
   });
 
-  var links = navLinks.querySelectorAll("a");
-  for (var i = 0; i < links.length; i++) {
+  const links = navLinks.querySelectorAll("a");
+  for (let i = 0; i < links.length; i++) {
     links[i].addEventListener("click", function () {
       navLinks.classList.remove("open");
     });
@@ -22,17 +24,17 @@ function setupNav() {
 }
 
 function setupScrollReveal() {
-  var revealElements = document.querySelectorAll(".reveal");
+  const revealElements = document.querySelectorAll(".reveal");
 
   if (!("IntersectionObserver" in window)) {
-    for (var i = 0; i < revealElements.length; i++) {
+    for (let i = 0; i < revealElements.length; i++) {
       revealElements[i].classList.add("visible");
     }
     return;
   }
 
-  var observer = new IntersectionObserver(function (entries) {
-    for (var j = 0; j < entries.length; j++) {
+  const observer = new IntersectionObserver(function (entries) {
+    for (let j = 0; j < entries.length; j++) {
       if (entries[j].isIntersecting) {
         entries[j].target.classList.add("visible");
         observer.unobserve(entries[j].target);
@@ -40,13 +42,15 @@ function setupScrollReveal() {
     }
   }, { threshold: 0.12 });
 
-  for (var k = 0; k < revealElements.length; k++) {
+  for (let k = 0; k < revealElements.length; k++) {
     observer.observe(revealElements[k]);
   }
 }
 
 function tryLocalPhoto() {
-  var img = new Image();
+  if (!profilePhoto) return;
+
+  const img = new Image();
   img.onload = function () {
     profilePhoto.src = PROFILE_PHOTO;
   };
@@ -54,7 +58,7 @@ function tryLocalPhoto() {
 }
 
 function loadGitHubProfile() {
-  fetch("https://api.github.com/users/" + GITHUB_USERNAME)
+  fetch("https://api.github.com/users/" + encodeURIComponent(GITHUB_USERNAME))
     .then(function (response) {
       return response.json();
     })
@@ -66,62 +70,110 @@ function loadGitHubProfile() {
         document.getElementById("stat-followers").textContent = data.followers;
       }
     })
-    .catch(function () {
-      /* keep default values */
-    });
+    .catch(function () {});
+}
+
+function isSafeUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" && parsed.hostname === "github.com";
+  } catch (e) {
+    return false;
+  }
+}
+
+function showGridMessage(text, includeLink) {
+  projectsGrid.textContent = "";
+  const p = document.createElement("p");
+  p.className = "loading";
+  p.textContent = text;
+
+  if (includeLink) {
+    const link = document.createElement("a");
+    link.href = "https://github.com/" + encodeURIComponent(GITHUB_USERNAME);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.style.color = "#a78bfa";
+    link.textContent = "Visit GitHub";
+    p.appendChild(link);
+  }
+
+  projectsGrid.appendChild(p);
 }
 
 function loadGitHubProjects() {
-  fetch("https://api.github.com/users/" + GITHUB_USERNAME + "/repos?sort=updated&per_page=6")
+  if (!projectsGrid) return;
+
+  fetch("https://api.github.com/users/" + encodeURIComponent(GITHUB_USERNAME) + "/repos?sort=updated&per_page=6")
     .then(function (response) {
       return response.json();
     })
     .then(function (repos) {
-      projectsGrid.innerHTML = "";
+      projectsGrid.textContent = "";
 
-      if (!repos || repos.length === 0) {
-        projectsGrid.innerHTML = '<p class="loading">No projects found.</p>';
+      if (!Array.isArray(repos) || repos.length === 0) {
+        showGridMessage("No projects found.", false);
         return;
       }
 
-      for (var i = 0; i < repos.length; i++) {
-        var repo = repos[i];
-        if (repo.fork) {
+      for (let i = 0; i < repos.length; i++) {
+        const repo = repos[i];
+        if (repo.fork || !isSafeUrl(repo.html_url)) {
           continue;
         }
 
-        var card = document.createElement("div");
+        const card = document.createElement("div");
         card.className = "project-card";
         card.style.animationDelay = (i * 0.1) + "s";
 
-        var desc = repo.description || "A project built with passion and curiosity.";
-        var lang = repo.language || "Code";
+        const titleHeading = document.createElement("h3");
+        const titleLink = document.createElement("a");
+        titleLink.href = repo.html_url;
+        titleLink.target = "_blank";
+        titleLink.rel = "noopener noreferrer";
+        titleLink.textContent = repo.name || "Untitled Project";
+        titleHeading.appendChild(titleLink);
 
-        card.innerHTML =
-          "<h3><a href=\"" + repo.html_url + "\" target=\"_blank\" rel=\"noopener\">" + repo.name + "</a></h3>" +
-          "<p class=\"project-desc\">" + desc + "</p>" +
-          "<div class=\"project-meta\">" +
-            "<span class=\"project-lang\">" + lang + "</span>" +
-            "<a href=\"" + repo.html_url + "\" target=\"_blank\" rel=\"noopener\" class=\"project-link\">View →</a>" +
-          "</div>";
+        const descP = document.createElement("p");
+        descP.className = "project-desc";
+        descP.textContent = repo.description || "A project built with passion and curiosity.";
+
+        const metaDiv = document.createElement("div");
+        metaDiv.className = "project-meta";
+
+        const langSpan = document.createElement("span");
+        langSpan.className = "project-lang";
+        langSpan.textContent = repo.language || "Code";
+
+        const viewLink = document.createElement("a");
+        viewLink.href = repo.html_url;
+        viewLink.target = "_blank";
+        viewLink.rel = "noopener noreferrer";
+        viewLink.className = "project-link";
+        viewLink.textContent = "View →";
+
+        metaDiv.appendChild(langSpan);
+        metaDiv.appendChild(viewLink);
+
+        card.appendChild(titleHeading);
+        card.appendChild(descP);
+        card.appendChild(metaDiv);
 
         projectsGrid.appendChild(card);
       }
 
       if (projectsGrid.children.length === 0) {
-        projectsGrid.innerHTML = '<p class="loading">No projects found.</p>';
+        showGridMessage("No projects found.", false);
       }
     })
     .catch(function () {
-      projectsGrid.innerHTML =
-        "<p class=\"loading\">Could not load projects. " +
-        "<a href=\"https://github.com/" + GITHUB_USERNAME + "\" target=\"_blank\" rel=\"noopener\" style=\"color:#a78bfa\">Visit GitHub</a></p>";
+      showGridMessage("Could not load projects. ", true);
     });
 }
 
 function showError(input, message) {
   input.classList.add("invalid");
-  var errorEl = input.parentElement.querySelector(".error-msg");
+  const errorEl = input.parentElement.querySelector(".error-msg");
   if (errorEl) {
     errorEl.textContent = message;
   }
@@ -129,7 +181,7 @@ function showError(input, message) {
 
 function clearError(input) {
   input.classList.remove("invalid");
-  var errorEl = input.parentElement.querySelector(".error-msg");
+  const errorEl = input.parentElement.querySelector(".error-msg");
   if (errorEl) {
     errorEl.textContent = "";
   }
@@ -142,13 +194,13 @@ function validateEmail(email) {
 function handleContactSubmit(event) {
   event.preventDefault();
 
-  var nameInput = document.getElementById("name");
-  var emailInput = document.getElementById("email");
-  var messageInput = document.getElementById("message");
-  var isValid = true;
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const messageInput = document.getElementById("message");
+  let isValid = true;
 
-  var fields = [nameInput, emailInput, messageInput];
-  for (var i = 0; i < fields.length; i++) {
+  const fields = [nameInput, emailInput, messageInput];
+  for (let i = 0; i < fields.length; i++) {
     clearError(fields[i]);
   }
 
@@ -174,8 +226,8 @@ function handleContactSubmit(event) {
     return;
   }
 
-  var subject = encodeURIComponent("Portfolio Contact from " + nameInput.value.trim());
-  var body = encodeURIComponent(
+  const subject = encodeURIComponent("Portfolio Contact from " + nameInput.value.trim());
+  const body = encodeURIComponent(
     "Name: " + nameInput.value.trim() + "\n" +
     "Email: " + emailInput.value.trim() + "\n\n" +
     messageInput.value.trim()
@@ -192,4 +244,6 @@ setupScrollReveal();
 tryLocalPhoto();
 loadGitHubProfile();
 loadGitHubProjects();
-contactForm.addEventListener("submit", handleContactSubmit);
+if (contactForm) {
+  contactForm.addEventListener("submit", handleContactSubmit);
+}
